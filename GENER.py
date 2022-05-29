@@ -38,25 +38,36 @@ def decrypt():
 def driver_code(spt, info):
     code = ''
     structure = ''
-    size_of_key = len(spt)
+    size_of_spt = len(spt)
     numeration = len(info)
-    for i in range(0, numeration, size_of_key):
-        structure = [info[i + j] for j in range(size_of_key)]
-        for j in range(size_of_key):
-            code += str(structure[size_of_key - int(spt[j]) - 1])
+    for i in range(0, numeration, size_of_spt):
+        structure = [info[i + j] for j in range(size_of_spt)]
+        for j in range(size_of_spt):
+            code += str(structure[size_of_spt - int(spt[j]) - 1])
     return code
 
 
 def letcrpt(spt, info):
-    size_of_key = len(spt)
+    size_of_spt = len(spt)
     numeration = len(info)
-    if numeration % size_of_key != 0:
-        for i in range(size_of_key - (numeration % size_of_key)):
+    if numeration % size_of_spt != 0:
+        for i in range(size_of_spt - (numeration % size_of_spt)):
             info += str("0")
     print(driver_code(spt, info))
 
 
-#def grpcrpt(spt, info):
+def grpcrpt(spt, info):
+    size_of_spt = len(spt)
+    amount_of_sym = int(input("На какие группы нужно разбить (кол-во символов)? "))
+    exit_t = [info[i:i + amount_of_sym] for i in range(0, len(info), amount_of_sym)]
+    if len(exit_t[-1]) != amount_of_sym:
+        for i in range(amount_of_sym - (len(exit_t[-1]) % amount_of_sym)):
+            exit_t[-1] += str("0")
+    if len(exit_t) != size_of_spt:
+        for i in range(size_of_spt - (len(exit_t) % size_of_spt)):
+            exit_t.append("0" * amount_of_sym)
+    print(driver_code(spt, exit_t))
+
 
 #def wordcrpt(spt, info):
 
