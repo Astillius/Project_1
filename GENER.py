@@ -1,57 +1,54 @@
 def Greetings():
-    print("═" * 50)
-    print("Алоха! Я - разум по шифрованию текстов.\nВ мой перечень услуг входит:")
-    print("1 - Шифровка. \n2 - Расшифровка.")
+    print("═" * 50, "Алоха! Я - разум по шифрованию текстов", "В мой перечень услуг входит:", "1 - Шифровка.", "2 - Расшифровка.", sep = "\n")
     while True:
         start = input("Выбери нужную тебе функцию: ")
         if not start.isnumeric():
             print("Вы ввели не число. Введите корректные данные.")
-        elif not 0 <= int(start) <= 2:
+        elif not 0 < int(start) <= 2:
             print("Вы ввели число вне числового диапазона")
         else:
             if int(start) == 1:
-                crypt()
-                return 0
+                return crypt()
             else:
-                decrypt()
-                return 0
+                return decrypt()
 
 
 def crypt():
     info = input("Введи текст сообщениия, которое необходимо защифровать: ")
-    print("═" * 5, "Введите ключ, с помощью которого будет шифроваться текст. Например: '1 3 0 2'", "═" * 5)
-    main_spt = input("Ключ: ")
-    spt = main_spt.split(" ")
-    print("═" * 5, "Виды шифрования:", "═" * 5,
-        "\n1 - Символьное шифрование.\n2 - Шифрование группы.\n3 - Шифрование слов")
-    option = int(input("Выберите вид шифрования: "))
-    if int(option) == 1:
-        letcrpt(spt, info)
-    elif int(option) == 2:
-        grpcrpt(spt, info)
-    elif int(option) == 3:
-        wordcrpt(spt, info)
+    print("═" * 5, "Введите ключ, с помощью которого будет шифроваться текст. Например: '1 3 0 2' (вводить через пробелы)", "═" * 5)
+    spt = input("Ключ: ").split(" ")
+    print("═" * 5, "Виды шифрования:", "═" * 5, "1 - Символьное шифрование.", "2 - Шифрование группы.", "3 - Шифрование слов", sep = "\n")
+    while True:
+        option = input("Выберите вид шифрования: ")
+        if not option.isnumeric():
+            print("Вы ввели не число. Введите корректные данные.")
+        elif not 0 <= int(option) <= 3:
+            print("Вы ввели число вне числового диапазона")
+        if int(option) == 1:
+            return letcrpt(spt, info)
+        elif int(option) == 2:
+            return grpcrpt(spt, info)
+        elif int(option) == 3:
+            return wordcrpt(spt, info)
 
 
 def decrypt():
-    info = input("Введи текст сообщениия, которое необходимо расшифровать: ")
-    main_spt = input("Ключ, с помощью которого было зашифровано сообщение: ")
-    spt = main_spt.split(" ")
-    print("═" * 5, "Способ, с помощью которого было защифровано сообщение:", "═" * 5,
-          "\n1 - Символьное шифрование.\n2 - Шифрование группы.\n3 - Шифрование слов")
-    option = input("Способ шифрования: ")
+    info = input("Введи текст сообщениия, которое необходимо защифровать/расшифровать: ")
+    spt = input("Ключ, с помощью которого было зашифровано сообщение: ").split(" ")
+    print("═" * 5, "Способ, с помощью которого было защифровано сообщение:", "1 - Символьное шифрование.", "2 - Шифрование группы.", "3 - Шифрование слов", sep = "\n")
     while True:
+        option = input("Способ шифрования: ")
         if not option.isnumeric():
             print("Вы ввели не число. Введите корректные данные.")
         elif not 0 <= int(option) <= 3:
             print("Вы ввели число вне числового диапазона")
         else:
             if int(option) == 1:
-                decrypt_let(spt, info)
+                return decrypt_let(spt, info)
             elif int(option) == 2:
-                decrypt_grp(spt, info)
+                return decrypt_grp(spt, info)
             elif int(option) == 3:
-                decrypt_word(spt, info)
+                return decrypt_word(spt, info)
 
 
 def driver_code(spt, info):
@@ -63,6 +60,19 @@ def driver_code(spt, info):
         structure = [info[i + j] for j in range(size_of_spt)]
         for j in range(size_of_spt):
             code += str(structure[size_of_spt - int(spt[j]) - 1])
+    return code
+
+
+def driver_code_decrypt(spt, info):
+    size_of_spt = len(spt)
+    n = len(info)
+    space = ''
+    code = ''
+    for i in range(0, n, size_of_spt):
+        space = [info[i + j] for j in range(size_of_spt)]
+        for j in range(size_of_spt):
+            code += str(space[size_of_spt - int(spt[j]) - 1])
+    code = code.replace("0", "")
     return code
 
 
@@ -102,22 +112,46 @@ def wordcrpt(spt, info):
         for i in range(size_of_spt - (len(exit_t) % size_of_spt)):
             exit_t.append("0" * 5)
     numerate = len(exit_t)
-    block = ''
+    space = ''
     code = ''
     for i in range(0, numerate, size_of_spt):
-        block = [exit_t[i + j] for j in range(size_of_spt)]
+        space = [exit_t[i + j] for j in range(size_of_spt)]
         for j in range(size_of_spt):
-            code += str(block[size_of_spt - int(spt[j]) - 1])
+            code += str(space[size_of_spt - int(spt[j]) - 1])
             code += " "
     print(code)
     return spt, info
 
 
-# def decrypt_let(spt, info):
+def decrypt_let(spt, info):
+    for i in range(len(spt) // 2):
+        spt[i], spt[-i - 1] = spt[-i - 1], spt[i]
+    print(driver_code_decrypt(spt, info))
 
-# def decrypt_grp(spt, info):
 
-# def decrypt_word(spt, info):
+def decrypt_grp(spt, info):
+    amount_of_sym = int(input("По сколько символов было сгруппировано?"))
+    exit_t = [info[i:i + amount_of_sym] for i in range(0, len(info), amount_of_sym)]
+    for i in range(len(spt) // 2):
+        spt[i], spt[-i - 1] = spt[-i - 1], spt[i]
+    print(driver_code_decrypt(spt, exit_t))
+
+
+def decrypt_word(spt, info):
+    exit_t = info.split()
+    for i in range(len(spt) // 2):
+        spt[i], spt[-i - 1] = spt[-i - 1], spt[i]
+    size_of_spt = len(spt)
+    numeration = len(exit_t)
+    code = ''
+    for i in range(0, numeration, size_of_spt):
+        new = [exit_t[i + j] for j in range(size_of_spt)]
+        for j in range(size_of_spt):
+            code += str(new[size_of_spt - int(spt[j]) - 1])
+            code += " "
+    code = code.replace("0", "")
+    print(code)
+
 
 
 flag = True
