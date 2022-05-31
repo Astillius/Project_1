@@ -22,7 +22,7 @@ def crypt():
         option = input("Выберите вид шифрования: ")
         if not option.isnumeric():
             print("Вы ввели не число. Введите корректные данные.")
-        elif not 0 <= int(option) <= 3:
+        elif not 0 < int(option) <= 3:
             print("Вы ввели число вне числового диапазона")
         if int(option) == 1:
             return letcrpt(spt, info)
@@ -33,7 +33,7 @@ def crypt():
 
 
 def decrypt():
-    info = input("Введи текст сообщениия, которое необходимо защифровать/расшифровать: ")
+    info = input("Введи текст сообщениия, которое необходимо расшифровать: ")
     spt = input("Ключ, с помощью которого было зашифровано сообщение: ").split(" ")
     print("═" * 5, "Способ, с помощью которого было защифровано сообщение:", "1 - Символьное шифрование.", "2 - Шифрование группы.", "3 - Шифрование слов", sep = "\n")
     while True:
@@ -65,10 +65,10 @@ def driver_code(spt, info):
 
 def driver_code_decrypt(spt, info):
     size_of_spt = len(spt)
-    n = len(info)
+    numeration = len(info)
     space = ''
     code = ''
-    for i in range(0, n, size_of_spt):
+    for i in range(0, numeration, size_of_spt):
         space = [info[i + j] for j in range(size_of_spt)]
         for j in range(size_of_spt):
             code += str(space[size_of_spt - int(spt[j]) - 1])
